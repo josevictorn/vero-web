@@ -20,7 +20,8 @@
         "noNamespaceImport": "off"
       },
       "style": {
-        "useConsistentTypeDefinitions": "off"
+        "useConsistentTypeDefinitions": "off",
+        "noExportedImports": "off"
       }
     }
   },
