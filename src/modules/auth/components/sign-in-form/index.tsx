@@ -3,19 +3,19 @@ import { ScalesIcon } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/common/components/ui/button";
 import {
 	Field,
 	FieldDescription,
 	FieldError,
 	FieldGroup,
 	FieldLabel,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+} from "@/common/components/ui/field";
+import { Input } from "@/common/components/ui/input";
 import {
 	requiredEmail,
 	requiredPasswordMinLength,
-} from "@/utils/validation-schemas";
+} from "@/common/utils/validation-schemas";
 
 const signInForm = z.object({
 	email: requiredEmail(),
