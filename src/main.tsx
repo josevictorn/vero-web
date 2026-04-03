@@ -7,6 +7,7 @@ import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { ThemeProvider } from "@/common/components/theme-provider.tsx";
+import { Toaster } from "./common/components/ui/sonner";
 
 // Create a new router instance
 const router = createRouter({
@@ -35,6 +36,7 @@ function InnerApp() {
 	return (
 		<ThemeProvider>
 			<QueryClientProvider client={queryClient}>
+				<Toaster />
 				<RouterProvider router={router} />
 			</QueryClientProvider>
 		</ThemeProvider>
