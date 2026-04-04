@@ -21,35 +21,33 @@ import { Skeleton } from "../ui/skeleton";
 import { NavGroup } from "./nav-group";
 import { NavUser } from "./nav-user";
 
-const data = {
-	navMain: [
-		{
-			title: "Dashboard",
-			url: "/dashboard",
-			icon: HouseIcon,
-		},
-		{
-			title: "Clientes",
-			url: "/clients",
-			icon: UserCircleGearIcon,
-		},
-		{
-			title: "Propostas",
-			url: "/proposals",
-			icon: HandshakeIcon,
-		},
-		{
-			title: "Contratos",
-			url: "/contracts",
-			icon: FileTextIcon,
-		},
-		{
-			title: "Financeiro",
-			url: "/financial",
-			icon: ChartBarIcon,
-		},
-	],
-};
+export const navMain = [
+	{
+		title: "Dashboard",
+		url: "/dashboard",
+		icon: HouseIcon,
+	},
+	{
+		title: "Clientes",
+		url: "/clients",
+		icon: UserCircleGearIcon,
+	},
+	{
+		title: "Propostas",
+		url: "/proposals",
+		icon: HandshakeIcon,
+	},
+	{
+		title: "Contratos",
+		url: "/contracts",
+		icon: FileTextIcon,
+	},
+	{
+		title: "Financeiro",
+		url: "/financial",
+		icon: ChartBarIcon,
+	},
+];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	const { userInfo } = useUser();
@@ -74,7 +72,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			</SidebarHeader>
 
 			<SidebarContent>
-				<NavGroup items={data.navMain} />
+				<NavGroup items={navMain} />
 			</SidebarContent>
 
 			<SidebarFooter>

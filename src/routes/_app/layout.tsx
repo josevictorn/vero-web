@@ -1,5 +1,11 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
-import { AppSidebar } from "@/common/components/sidebar";
+import {
+	createFileRoute,
+	Outlet,
+	redirect,
+	useLocation,
+} from "@tanstack/react-router";
+import { useEffect } from "react";
+import { AppSidebar, navMain } from "@/common/components/sidebar";
 import { Separator } from "@/common/components/ui/separator";
 import {
 	SidebarInset,
@@ -24,6 +30,16 @@ export const Route = createFileRoute("/_app")({
 });
 
 function AppLayout() {
+	const { pathname } = useLocation();
+
+	const currentNav = navMain.find((item) => pathname.startsWith(item.url));
+
+	const title = currentNav?.title ?? "Vero";
+
+	useEffect(() => {
+		document.title = `${title} - Vero`;
+	}, [title]);
+
 	return (
 		<SidebarProvider>
 			<AppSidebar />
@@ -35,7 +51,7 @@ function AppLayout() {
 							className="mr-2 data-[orientation=vertical]:h-6"
 							orientation="vertical"
 						/>
-						<p className="font-medium text-sm tracking-tight">Dashboard</p>
+						<p className="font-medium text-sm tracking-tight">{title}</p>
 					</div>
 				</header>
 				<div className="flex flex-1 flex-col gap-4 p-4">
