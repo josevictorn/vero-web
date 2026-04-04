@@ -16,6 +16,8 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/common/components/ui/sidebar";
+import { useUser } from "@/common/contexts/User";
+import { Skeleton } from "../ui/skeleton";
 import { NavGroup } from "./nav-group";
 import { NavUser } from "./nav-user";
 
@@ -47,14 +49,10 @@ const data = {
 			icon: ChartBarIcon,
 		},
 	],
-	user: {
-		name: "shadcn",
-		email: "m@example.com",
-		avatar: "/avatars/shadcn.jpg",
-	},
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+	const { userInfo } = useUser();
 	return (
 		<Sidebar collapsible="offcanvas" {...props}>
 			<SidebarHeader>
@@ -80,7 +78,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			</SidebarContent>
 
 			<SidebarFooter>
-				<NavUser user={data.user} />
+				{userInfo ? (
+					<NavUser
+						user={{
+							name: userInfo?.name,
+							email: userInfo?.email,
+						}}
+					/>
+				) : (
+					<Skeleton className="h-10 w-full rounded-lg" />
+				)}
 			</SidebarFooter>
 		</Sidebar>
 	);
