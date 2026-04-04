@@ -1,5 +1,4 @@
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 type RouteContext = {
 	isAuthenticated: boolean;
@@ -13,7 +12,7 @@ function RootLayout() {
 	return (
 		<>
 			<Outlet />
-			<TanStackRouterDevtools />
+			{/* <TanStackRouterDevtools /> */}
 		</>
 	);
 }

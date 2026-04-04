@@ -17,6 +17,7 @@ import {
 	SidebarMenuItem,
 } from "@/common/components/ui/sidebar";
 import { NavGroup } from "./nav-group";
+import { NavUser } from "./nav-user";
 
 const data = {
 	navMain: [
@@ -46,6 +47,11 @@ const data = {
 			icon: ChartBarIcon,
 		},
 	],
+	user: {
+		name: "shadcn",
+		email: "m@example.com",
+		avatar: "/avatars/shadcn.jpg",
+	},
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -73,7 +79,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				<NavGroup items={data.navMain} />
 			</SidebarContent>
 
-			<SidebarFooter>SidebarFooter</SidebarFooter>
+			<SidebarFooter>
+				<NavUser user={data.user} />
+			</SidebarFooter>
 		</Sidebar>
 	);
 }
