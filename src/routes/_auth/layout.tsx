@@ -1,8 +1,17 @@
 import { ScalesIcon } from "@phosphor-icons/react";
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth")({
 	component: AuthLayout,
+	beforeLoad: ({ context }) => {
+		const isAuthenticated = context?.isAuthenticated;
+
+		if (isAuthenticated) {
+			throw redirect({
+				to: "/dashboard",
+			});
+		}
+	},
 });
 
 function AuthLayout() {
@@ -22,5 +31,5 @@ function AuthLayout() {
 				<Outlet />
 			</div>
 		</div>
-	)
+	);
 }
