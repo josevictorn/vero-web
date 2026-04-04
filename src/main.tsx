@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { ThemeProvider } from "@/common/components/theme-provider.tsx";
 import { Toaster } from "./common/components/ui/sonner";
+import { TooltipProvider } from "./common/components/ui/tooltip";
 import { UserProvider, useUser } from "./common/contexts/User";
 import { AuthProvider, useAuth } from "./modules/auth/contexts/auth-context";
 
@@ -39,10 +40,12 @@ function InnerApp() {
 	return (
 		<ThemeProvider>
 			<Toaster />
-			<RouterProvider
-				context={{ isAuthenticated: authorized || isAuthenticated }}
-				router={router}
-			/>
+			<TooltipProvider>
+				<RouterProvider
+					context={{ isAuthenticated: authorized || isAuthenticated }}
+					router={router}
+				/>
+			</TooltipProvider>
 		</ThemeProvider>
 	);
 }

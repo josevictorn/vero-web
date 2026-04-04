@@ -15,7 +15,7 @@ export function NavGroup({ items }: NavMainProps) {
 			<SidebarMenu>
 				{items.map((item) => (
 					<SidebarMenuItem className="mx-1" key={item.title}>
-						<SidebarMenuButton asChild>
+						<SidebarMenuButton asChild tooltip={item.title}>
 							<Link
 								className="data-[current=true]:bg-sidebar-accent data-[current=true]:font-semibold"
 								data-current={pathname === item.url}
