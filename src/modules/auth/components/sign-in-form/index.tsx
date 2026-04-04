@@ -16,6 +16,7 @@ import {
 	requiredEmail,
 	requiredPasswordMinLength,
 } from "@/common/utils/validation-schemas";
+import type { SignInControllerChildrenProps } from "../../controllers/sign-in-controller";
 
 const signInForm = z.object({
 	email: requiredEmail(),
@@ -24,7 +25,7 @@ const signInForm = z.object({
 
 type SignInForm = z.infer<typeof signInForm>;
 
-export function SignInForm() {
+export function SignInForm({ login }: SignInControllerChildrenProps) {
 	const {
 		register,
 		formState: { isSubmitting, errors },
@@ -53,10 +54,7 @@ export function SignInForm() {
 					</p>
 				</div>
 
-				<form
-					className="space-y-4"
-					onSubmit={handleSubmit((datas) => console.log(datas))}
-				>
+				<form className="space-y-4" onSubmit={handleSubmit(login)}>
 					<FieldGroup>
 						<Field data-invalid={!!errors.email}>
 							<FieldLabel htmlFor="email">E-mail</FieldLabel>
@@ -91,7 +89,12 @@ export function SignInForm() {
 						</Field>
 					</FieldGroup>
 
-					<Button className="w-full" disabled={isSubmitting} type="submit">
+					<Button
+						className="w-full"
+						disabled={isSubmitting}
+						isLoading={isSubmitting}
+						type="submit"
+					>
 						Fazer login
 					</Button>
 				</form>
