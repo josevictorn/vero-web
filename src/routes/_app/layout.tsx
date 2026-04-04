@@ -1,4 +1,6 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { AppSidebar } from "@/common/components/sidebar";
+import { SidebarProvider } from "@/common/components/ui/sidebar";
 
 export const Route = createFileRoute("/_app")({
 	component: AppLayout,
@@ -17,5 +19,10 @@ export const Route = createFileRoute("/_app")({
 });
 
 function AppLayout() {
-	return <Outlet />;
+	return (
+		<SidebarProvider>
+			<AppSidebar />
+			<Outlet />
+		</SidebarProvider>
+	);
 }
