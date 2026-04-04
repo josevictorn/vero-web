@@ -25,7 +25,6 @@ const data = {
 			url: "/dashboard",
 			icon: HouseIcon,
 		},
-
 		{
 			title: "Clientes",
 			url: "/clients",

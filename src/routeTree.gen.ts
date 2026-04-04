@@ -13,7 +13,11 @@ import { Route as AuthLayoutRouteImport } from './routes/_auth/layout'
 import { Route as AppLayoutRouteImport } from './routes/_app/layout'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthSignInIndexRouteImport } from './routes/_auth/sign-in/index'
+import { Route as AppProposalsIndexRouteImport } from './routes/_app/proposals/index'
+import { Route as AppFinancialIndexRouteImport } from './routes/_app/financial/index'
 import { Route as AppDashboardIndexRouteImport } from './routes/_app/dashboard/index'
+import { Route as AppContractsIndexRouteImport } from './routes/_app/contracts/index'
+import { Route as AppClientsIndexRouteImport } from './routes/_app/clients/index'
 
 const AuthLayoutRoute = AuthLayoutRouteImport.update({
   id: '/_auth',
@@ -33,20 +37,48 @@ const AuthSignInIndexRoute = AuthSignInIndexRouteImport.update({
   path: '/sign-in/',
   getParentRoute: () => AuthLayoutRoute,
 } as any)
+const AppProposalsIndexRoute = AppProposalsIndexRouteImport.update({
+  id: '/proposals/',
+  path: '/proposals/',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
+const AppFinancialIndexRoute = AppFinancialIndexRouteImport.update({
+  id: '/financial/',
+  path: '/financial/',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
 const AppDashboardIndexRoute = AppDashboardIndexRouteImport.update({
   id: '/dashboard/',
   path: '/dashboard/',
   getParentRoute: () => AppLayoutRoute,
 } as any)
+const AppContractsIndexRoute = AppContractsIndexRouteImport.update({
+  id: '/contracts/',
+  path: '/contracts/',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
+const AppClientsIndexRoute = AppClientsIndexRouteImport.update({
+  id: '/clients/',
+  path: '/clients/',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/clients/': typeof AppClientsIndexRoute
+  '/contracts/': typeof AppContractsIndexRoute
   '/dashboard/': typeof AppDashboardIndexRoute
+  '/financial/': typeof AppFinancialIndexRoute
+  '/proposals/': typeof AppProposalsIndexRoute
   '/sign-in/': typeof AuthSignInIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/clients': typeof AppClientsIndexRoute
+  '/contracts': typeof AppContractsIndexRoute
   '/dashboard': typeof AppDashboardIndexRoute
+  '/financial': typeof AppFinancialIndexRoute
+  '/proposals': typeof AppProposalsIndexRoute
   '/sign-in': typeof AuthSignInIndexRoute
 }
 export interface FileRoutesById {
@@ -54,20 +86,42 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_app': typeof AppLayoutRouteWithChildren
   '/_auth': typeof AuthLayoutRouteWithChildren
+  '/_app/clients/': typeof AppClientsIndexRoute
+  '/_app/contracts/': typeof AppContractsIndexRoute
   '/_app/dashboard/': typeof AppDashboardIndexRoute
+  '/_app/financial/': typeof AppFinancialIndexRoute
+  '/_app/proposals/': typeof AppProposalsIndexRoute
   '/_auth/sign-in/': typeof AuthSignInIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard/' | '/sign-in/'
+  fullPaths:
+    | '/'
+    | '/clients/'
+    | '/contracts/'
+    | '/dashboard/'
+    | '/financial/'
+    | '/proposals/'
+    | '/sign-in/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/sign-in'
+  to:
+    | '/'
+    | '/clients'
+    | '/contracts'
+    | '/dashboard'
+    | '/financial'
+    | '/proposals'
+    | '/sign-in'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/_auth'
+    | '/_app/clients/'
+    | '/_app/contracts/'
     | '/_app/dashboard/'
+    | '/_app/financial/'
+    | '/_app/proposals/'
     | '/_auth/sign-in/'
   fileRoutesById: FileRoutesById
 }
@@ -107,6 +161,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignInIndexRouteImport
       parentRoute: typeof AuthLayoutRoute
     }
+    '/_app/proposals/': {
+      id: '/_app/proposals/'
+      path: '/proposals'
+      fullPath: '/proposals/'
+      preLoaderRoute: typeof AppProposalsIndexRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
+    '/_app/financial/': {
+      id: '/_app/financial/'
+      path: '/financial'
+      fullPath: '/financial/'
+      preLoaderRoute: typeof AppFinancialIndexRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
     '/_app/dashboard/': {
       id: '/_app/dashboard/'
       path: '/dashboard'
@@ -114,15 +182,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardIndexRouteImport
       parentRoute: typeof AppLayoutRoute
     }
+    '/_app/contracts/': {
+      id: '/_app/contracts/'
+      path: '/contracts'
+      fullPath: '/contracts/'
+      preLoaderRoute: typeof AppContractsIndexRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
+    '/_app/clients/': {
+      id: '/_app/clients/'
+      path: '/clients'
+      fullPath: '/clients/'
+      preLoaderRoute: typeof AppClientsIndexRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
   }
 }
 
 interface AppLayoutRouteChildren {
+  AppClientsIndexRoute: typeof AppClientsIndexRoute
+  AppContractsIndexRoute: typeof AppContractsIndexRoute
   AppDashboardIndexRoute: typeof AppDashboardIndexRoute
+  AppFinancialIndexRoute: typeof AppFinancialIndexRoute
+  AppProposalsIndexRoute: typeof AppProposalsIndexRoute
 }
 
 const AppLayoutRouteChildren: AppLayoutRouteChildren = {
+  AppClientsIndexRoute: AppClientsIndexRoute,
+  AppContractsIndexRoute: AppContractsIndexRoute,
   AppDashboardIndexRoute: AppDashboardIndexRoute,
+  AppFinancialIndexRoute: AppFinancialIndexRoute,
+  AppProposalsIndexRoute: AppProposalsIndexRoute,
 }
 
 const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
