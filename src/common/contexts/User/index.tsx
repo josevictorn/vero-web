@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext } from "react";
-import storage from "@/common/Config/storage";
 import { LoadingScreen } from "@/common/components/loading-screen";
+import storage from "@/common/config/storage";
 import { constants } from "@/common/utils";
 import { getProfile } from "@/modules/auth/services";
 import type { User } from "@/modules/auth/services/types";
