@@ -16,7 +16,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/common/components/ui/sidebar";
-import { useUser } from "@/common/contexts/User";
+import { useUser } from "@/common/contexts/user";
 import { Skeleton } from "../ui/skeleton";
 import { NavGroup } from "./nav-group";
 import { NavUser } from "./nav-user";
