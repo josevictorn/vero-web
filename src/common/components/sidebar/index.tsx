@@ -5,6 +5,7 @@ import {
 	HouseIcon,
 	ScalesIcon,
 	UserCircleGearIcon,
+	UsersThreeIcon,
 } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
 import {
@@ -46,6 +47,11 @@ export const navMain = [
 		title: "Financeiro",
 		url: "/financial",
 		icon: ChartBarIcon,
+	},
+	{
+		title: "Gereciamento de usuários",
+		url: "/users",
+		icon: UsersThreeIcon,
 	},
 ];
 

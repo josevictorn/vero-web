@@ -13,6 +13,7 @@ import { Route as AuthLayoutRouteImport } from './routes/_auth/layout'
 import { Route as AppLayoutRouteImport } from './routes/_app/layout'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthSignInIndexRouteImport } from './routes/_auth/sign-in/index'
+import { Route as AppUsersIndexRouteImport } from './routes/_app/users/index'
 import { Route as AppProposalsIndexRouteImport } from './routes/_app/proposals/index'
 import { Route as AppFinancialIndexRouteImport } from './routes/_app/financial/index'
 import { Route as AppDashboardIndexRouteImport } from './routes/_app/dashboard/index'
@@ -36,6 +37,11 @@ const AuthSignInIndexRoute = AuthSignInIndexRouteImport.update({
   id: '/sign-in/',
   path: '/sign-in/',
   getParentRoute: () => AuthLayoutRoute,
+} as any)
+const AppUsersIndexRoute = AppUsersIndexRouteImport.update({
+  id: '/users/',
+  path: '/users/',
+  getParentRoute: () => AppLayoutRoute,
 } as any)
 const AppProposalsIndexRoute = AppProposalsIndexRouteImport.update({
   id: '/proposals/',
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/': typeof AppDashboardIndexRoute
   '/financial/': typeof AppFinancialIndexRoute
   '/proposals/': typeof AppProposalsIndexRoute
+  '/users/': typeof AppUsersIndexRoute
   '/sign-in/': typeof AuthSignInIndexRoute
 }
 export interface FileRoutesByTo {
@@ -79,6 +86,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AppDashboardIndexRoute
   '/financial': typeof AppFinancialIndexRoute
   '/proposals': typeof AppProposalsIndexRoute
+  '/users': typeof AppUsersIndexRoute
   '/sign-in': typeof AuthSignInIndexRoute
 }
 export interface FileRoutesById {
@@ -91,6 +99,7 @@ export interface FileRoutesById {
   '/_app/dashboard/': typeof AppDashboardIndexRoute
   '/_app/financial/': typeof AppFinancialIndexRoute
   '/_app/proposals/': typeof AppProposalsIndexRoute
+  '/_app/users/': typeof AppUsersIndexRoute
   '/_auth/sign-in/': typeof AuthSignInIndexRoute
 }
 export interface FileRouteTypes {
@@ -102,6 +111,7 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/financial/'
     | '/proposals/'
+    | '/users/'
     | '/sign-in/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -111,6 +121,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/financial'
     | '/proposals'
+    | '/users'
     | '/sign-in'
   id:
     | '__root__'
@@ -122,6 +133,7 @@ export interface FileRouteTypes {
     | '/_app/dashboard/'
     | '/_app/financial/'
     | '/_app/proposals/'
+    | '/_app/users/'
     | '/_auth/sign-in/'
   fileRoutesById: FileRoutesById
 }
@@ -160,6 +172,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/sign-in/'
       preLoaderRoute: typeof AuthSignInIndexRouteImport
       parentRoute: typeof AuthLayoutRoute
+    }
+    '/_app/users/': {
+      id: '/_app/users/'
+      path: '/users'
+      fullPath: '/users/'
+      preLoaderRoute: typeof AppUsersIndexRouteImport
+      parentRoute: typeof AppLayoutRoute
     }
     '/_app/proposals/': {
       id: '/_app/proposals/'
@@ -205,6 +224,7 @@ interface AppLayoutRouteChildren {
   AppDashboardIndexRoute: typeof AppDashboardIndexRoute
   AppFinancialIndexRoute: typeof AppFinancialIndexRoute
   AppProposalsIndexRoute: typeof AppProposalsIndexRoute
+  AppUsersIndexRoute: typeof AppUsersIndexRoute
 }
 
 const AppLayoutRouteChildren: AppLayoutRouteChildren = {
@@ -213,6 +233,7 @@ const AppLayoutRouteChildren: AppLayoutRouteChildren = {
   AppDashboardIndexRoute: AppDashboardIndexRoute,
   AppFinancialIndexRoute: AppFinancialIndexRoute,
   AppProposalsIndexRoute: AppProposalsIndexRoute,
+  AppUsersIndexRoute: AppUsersIndexRoute,
 }
 
 const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
