@@ -11,6 +11,15 @@ declare global {
 		message: string;
 		statusCode: number;
 	}
+
+	interface Paginated<T> {
+		meta: {
+			currentPage: number;
+			totalCount: number;
+			perPage: number;
+		};
+		results: T[];
+	}
 }
 
 export {};
