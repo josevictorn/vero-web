@@ -5,7 +5,7 @@ import type * as React from "react";
 import { cn } from "@/common/lib/utils";
 import { Spinner } from "./spinner";
 
-interface ButtonProps
+export interface ButtonProps
 	extends React.ComponentPropsWithoutRef<"button">,
 		VariantProps<typeof buttonVariants> {
 	asChild?: boolean;

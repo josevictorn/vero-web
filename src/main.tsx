@@ -9,7 +9,7 @@ import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { ThemeProvider } from "@/common/components/theme-provider.tsx";
 import { Toaster } from "./common/components/ui/sonner";
 import { TooltipProvider } from "./common/components/ui/tooltip";
-import { UserProvider, useUser } from "./common/contexts/User";
+import { UserProvider, useUser } from "./common/contexts/user";
 import { AuthProvider, useAuth } from "./modules/auth/contexts/auth-context";
 
 // Create a new router instance

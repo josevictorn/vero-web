@@ -1,6 +1,6 @@
 import axios, { type AxiosError, HttpStatusCode } from "axios";
 import { env } from "@/common/env";
-import storage from "../Config/storage";
+import storage from "../config/storage";
 import { constants } from "../utils";
 
 export const api = axios.create({

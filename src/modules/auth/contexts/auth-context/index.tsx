@@ -7,7 +7,7 @@ import type { AxiosError } from "axios";
 import type React from "react";
 import { createContext, useCallback, useContext, useState } from "react";
 import { toast } from "sonner";
-import storage from "@/common/Config/storage";
+import storage from "@/common/config/storage";
 import { constants } from "@/common/utils";
 import { authenticate } from "../../services";
 import type {
