@@ -1,5 +1,5 @@
 import request from "@/common/lib/axios";
-import type { Account, FetchAccountsQuery } from "./types";
+import type { Account, CreateAccountBody, FetchAccountsQuery } from "./types";
 
 export async function fetchAccounts({ page }: FetchAccountsQuery) {
 	const response = await request<Paginated<Account>>({
@@ -7,6 +7,20 @@ export async function fetchAccounts({ page }: FetchAccountsQuery) {
 		url: "/accounts",
 		params: {
 			page,
+		},
+	});
+
+	return response.data;
+}
+
+export async function createAccount({ name, email, role }: CreateAccountBody) {
+	const response = await request<Account>({
+		method: "POST",
+		url: "/accounts",
+		data: {
+			name,
+			email,
+			role,
 		},
 	});
 

@@ -20,3 +20,9 @@ export interface Account {
 	name: string;
 	role: UserRole;
 }
+
+export interface CreateAccountBody {
+	email: string;
+	name: string;
+	role: UserRole;
+}
