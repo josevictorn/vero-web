@@ -20,6 +20,13 @@ declare global {
 		};
 		results: T[];
 	}
+
+	interface BaseFormProps<Type> {
+		initialValues?: Type;
+		isLoading: boolean;
+		submit: (data: Type) => Promise<Type>;
+		title?: string;
+	}
 }
 
 export {};

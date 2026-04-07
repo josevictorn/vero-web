@@ -5,6 +5,7 @@ import BaseContainer from "@/common/components/base-container";
 import { PageHeader } from "@/common/components/page-header";
 import { UserCreateDialog } from "@/modules/users/components/user-create-dialog";
 import { UsersList } from "@/modules/users/components/user-list";
+import { CreateUserController } from "@/modules/users/controllers/create-user-controller";
 import { ListUsersController } from "@/modules/users/controllers/list-users-controller";
 
 export const searchSchema = z.object({
@@ -29,7 +30,11 @@ function RouteComponent() {
 				subtitle="Gerencie os usuários da plataforma e suas permissões de acesso"
 				title="Gerecionamento de usuários"
 			/>
-			<UserCreateDialog onOpenChange={setOpen} open={open} />
+			<CreateUserController>
+				{(props) => (
+					<UserCreateDialog onOpenChange={setOpen} open={open} {...props} />
+				)}
+			</CreateUserController>
 			<ListUsersController>
 				{(props) => <UsersList {...props} />}
 			</ListUsersController>
