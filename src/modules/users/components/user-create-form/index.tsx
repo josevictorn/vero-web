@@ -33,7 +33,7 @@ const userCreateFormSchema = z.object({
 type UserCreateFormData = z.infer<typeof userCreateFormSchema>;
 
 interface UserCreateFormProps extends React.ComponentProps<"form"> {
-	onCreateUser?: (data: UserCreateFormData) => Promise<void> | void;
+	onCreateUser: (data: UserCreateFormData) => void;
 }
 
 export function UserCreateForm({

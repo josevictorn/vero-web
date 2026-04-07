@@ -16,16 +16,25 @@ import {
 	DrawerTitle,
 } from "@/common/components/ui/drawer";
 import { useMediaQuery } from "@/common/hooks/use-media-query";
+import type { CreateAccountBody } from "../../services/types";
 import { UserCreateForm } from "../user-create-form";
+
+type UserCreateDialogProps = BaseFormProps<CreateAccountBody> & {
+	onOpenChange: (open: boolean) => void;
+	open: boolean;
+};
 
 export function UserCreateDialog({
 	open,
 	onOpenChange,
-}: {
-	open: boolean;
-	onOpenChange: (open: boolean) => void;
-}) {
+	submit,
+}: UserCreateDialogProps) {
 	const isDesktop = useMediaQuery("(min-width: 768px)");
+
+	const handleCreateUser = async (data: CreateAccountBody) => {
+		await submit(data);
+		onOpenChange(false);
+	};
 
 	if (isDesktop) {
 		return (
@@ -37,7 +46,7 @@ export function UserCreateDialog({
 							Preencha os campos abaixo para criar um novo usuário.
 						</DialogDescription>
 					</DialogHeader>
-					<UserCreateForm />
+					<UserCreateForm onCreateUser={handleCreateUser} />
 				</DialogContent>
 			</Dialog>
 		);
@@ -52,7 +61,7 @@ export function UserCreateDialog({
 						Preencha os campos abaixo para criar um novo usuário.
 					</DrawerDescription>
 				</DrawerHeader>
-				<UserCreateForm className="px-4" />
+				<UserCreateForm className="px-4" onCreateUser={handleCreateUser} />
 				<DrawerFooter className="pt-2">
 					<DrawerClose asChild>
 						<Button variant="outline">Cancelar</Button>
