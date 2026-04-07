@@ -1,5 +1,13 @@
 import type { UserRole } from "../services/types";
 
+export const userRoles = [
+	"ADMIN",
+	"CLIENT",
+	"ASSISTANT",
+	"FINANCE",
+	"LAWYER",
+] as const;
+
 export const userRoleMap: Record<UserRole, string> = {
 	ADMIN: "Administrador",
 	ASSISTANT: "Assistente",
