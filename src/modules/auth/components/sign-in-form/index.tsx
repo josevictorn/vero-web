@@ -97,6 +97,16 @@ export function SignInForm({ login }: SignInControllerChildrenProps) {
 					>
 						Fazer login
 					</Button>
+
+					<Button
+						asChild
+						className="w-full"
+						disabled={isSubmitting}
+						type="button"
+						variant="outline"
+					>
+						<Link to="/sign-up">Ainda não tem uma conta? Cadastre-se</Link>
+					</Button>
 				</form>
 
 				<FieldDescription className="px-6 text-center">
