@@ -27,6 +27,7 @@ import { userRoleMap, userRoles } from "../../utils";
 const userCreateFormSchema = z.object({
 	name: requiredString(),
 	email: requiredEmail(),
+	password: requiredString(),
 	role: z.enum(userRoles),
 });
 
@@ -51,6 +52,7 @@ export function UserCreateForm({
 		defaultValues: {
 			name: "",
 			email: "",
+			password: "",
 			role: "CLIENT",
 		},
 	});
