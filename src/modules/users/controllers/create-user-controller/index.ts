@@ -2,10 +2,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { toast } from "sonner";
 import { createAccount } from "../../services";
-import type { CreateAccountBody } from "../../services/types";
+import type { Account, CreateAccountBody } from "../../services/types";
 
 type CreateUserControllerProps = ChildrenController<
-	BaseFormProps<CreateAccountBody>
+	BaseFormProps<CreateAccountBody, Account>
 >;
 
 export function CreateUserController({ children }: CreateUserControllerProps) {
@@ -28,6 +28,6 @@ export function CreateUserController({ children }: CreateUserControllerProps) {
 
 	return children({
 		submit: createUserRequest.mutateAsync,
-		isLoading: createUserRequest.isPending,
+		isPending: createUserRequest.isPending,
 	});
 }

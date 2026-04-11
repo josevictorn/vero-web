@@ -16,13 +16,14 @@ export interface Account {
 	createdAt: string;
 	email: string;
 	id: number;
-	isActive: boolean;
 	name: string;
 	role: UserRole;
+	updatedAt: string;
 }
 
 export interface CreateAccountBody {
 	email: string;
 	name: string;
-	role: UserRole;
+	password: string;
+	role?: UserRole;
 }
