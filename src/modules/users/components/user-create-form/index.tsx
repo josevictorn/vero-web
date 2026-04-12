@@ -90,6 +90,19 @@ export function UserCreateForm({
 					{errors.email && <FieldError errors={[errors.email]} />}
 				</Field>
 
+				<FieldGroup>
+					<Field data-invalid={!!errors.password}>
+						<FieldLabel htmlFor="password">Senha</FieldLabel>
+						<Input
+							id="password"
+							type="password"
+							{...register("password")}
+							aria-invalid={!!errors.password}
+						/>
+						{errors.password && <FieldError errors={[errors.password]} />}
+					</Field>
+				</FieldGroup>
+
 				<Field data-invalid={!!errors.role}>
 					<FieldLabel htmlFor="role">Função</FieldLabel>
 					<Controller

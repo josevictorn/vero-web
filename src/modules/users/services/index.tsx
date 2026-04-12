@@ -4,7 +4,7 @@ import type { Account, CreateAccountBody, FetchAccountsQuery } from "./types";
 export async function fetchAccounts({ page }: FetchAccountsQuery) {
 	const response = await request<Paginated<Account>>({
 		method: "GET",
-		url: "/accounts",
+		url: "/users",
 		params: {
 			page,
 		},
