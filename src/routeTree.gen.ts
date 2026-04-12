@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthSignUpIndexRouteImport } from './routes/_auth/sign-up/index'
 import { Route as AuthSignInIndexRouteImport } from './routes/_auth/sign-in/index'
 import { Route as AppUsersIndexRouteImport } from './routes/_app/users/index'
+import { Route as AppScreeningFlowsIndexRouteImport } from './routes/_app/screening-flows/index'
 import { Route as AppProposalsIndexRouteImport } from './routes/_app/proposals/index'
 import { Route as AppLeadsIndexRouteImport } from './routes/_app/leads/index'
 import { Route as AppFinancialIndexRouteImport } from './routes/_app/financial/index'
@@ -48,6 +49,11 @@ const AuthSignInIndexRoute = AuthSignInIndexRouteImport.update({
 const AppUsersIndexRoute = AppUsersIndexRouteImport.update({
   id: '/users/',
   path: '/users/',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
+const AppScreeningFlowsIndexRoute = AppScreeningFlowsIndexRouteImport.update({
+  id: '/screening-flows/',
+  path: '/screening-flows/',
   getParentRoute: () => AppLayoutRoute,
 } as any)
 const AppProposalsIndexRoute = AppProposalsIndexRouteImport.update({
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/financial/': typeof AppFinancialIndexRoute
   '/leads/': typeof AppLeadsIndexRoute
   '/proposals/': typeof AppProposalsIndexRoute
+  '/screening-flows/': typeof AppScreeningFlowsIndexRoute
   '/users/': typeof AppUsersIndexRoute
   '/sign-in/': typeof AuthSignInIndexRoute
   '/sign-up/': typeof AuthSignUpIndexRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/financial': typeof AppFinancialIndexRoute
   '/leads': typeof AppLeadsIndexRoute
   '/proposals': typeof AppProposalsIndexRoute
+  '/screening-flows': typeof AppScreeningFlowsIndexRoute
   '/users': typeof AppUsersIndexRoute
   '/sign-in': typeof AuthSignInIndexRoute
   '/sign-up': typeof AuthSignUpIndexRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/_app/financial/': typeof AppFinancialIndexRoute
   '/_app/leads/': typeof AppLeadsIndexRoute
   '/_app/proposals/': typeof AppProposalsIndexRoute
+  '/_app/screening-flows/': typeof AppScreeningFlowsIndexRoute
   '/_app/users/': typeof AppUsersIndexRoute
   '/_auth/sign-in/': typeof AuthSignInIndexRoute
   '/_auth/sign-up/': typeof AuthSignUpIndexRoute
@@ -130,6 +139,7 @@ export interface FileRouteTypes {
     | '/financial/'
     | '/leads/'
     | '/proposals/'
+    | '/screening-flows/'
     | '/users/'
     | '/sign-in/'
     | '/sign-up/'
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
     | '/financial'
     | '/leads'
     | '/proposals'
+    | '/screening-flows'
     | '/users'
     | '/sign-in'
     | '/sign-up'
@@ -156,6 +167,7 @@ export interface FileRouteTypes {
     | '/_app/financial/'
     | '/_app/leads/'
     | '/_app/proposals/'
+    | '/_app/screening-flows/'
     | '/_app/users/'
     | '/_auth/sign-in/'
     | '/_auth/sign-up/'
@@ -211,6 +223,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppUsersIndexRouteImport
       parentRoute: typeof AppLayoutRoute
     }
+    '/_app/screening-flows/': {
+      id: '/_app/screening-flows/'
+      path: '/screening-flows'
+      fullPath: '/screening-flows/'
+      preLoaderRoute: typeof AppScreeningFlowsIndexRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
     '/_app/proposals/': {
       id: '/_app/proposals/'
       path: '/proposals'
@@ -263,6 +282,7 @@ interface AppLayoutRouteChildren {
   AppFinancialIndexRoute: typeof AppFinancialIndexRoute
   AppLeadsIndexRoute: typeof AppLeadsIndexRoute
   AppProposalsIndexRoute: typeof AppProposalsIndexRoute
+  AppScreeningFlowsIndexRoute: typeof AppScreeningFlowsIndexRoute
   AppUsersIndexRoute: typeof AppUsersIndexRoute
 }
 
@@ -273,6 +293,7 @@ const AppLayoutRouteChildren: AppLayoutRouteChildren = {
   AppFinancialIndexRoute: AppFinancialIndexRoute,
   AppLeadsIndexRoute: AppLeadsIndexRoute,
   AppProposalsIndexRoute: AppProposalsIndexRoute,
+  AppScreeningFlowsIndexRoute: AppScreeningFlowsIndexRoute,
   AppUsersIndexRoute: AppUsersIndexRoute,
 }
 
