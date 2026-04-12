@@ -26,3 +26,11 @@ export interface CreateAccountBody {
 	password: string;
 	role?: UserRole;
 }
+
+export interface UpdateUserBody {
+	email?: string;
+	id: number;
+	name?: string;
+	password?: string;
+	role?: UserRole;
+}
