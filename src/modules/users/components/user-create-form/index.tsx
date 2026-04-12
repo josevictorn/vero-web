@@ -80,7 +80,7 @@ export function UserCreateForm({
 			name: initialValues?.name ?? "",
 			email: initialValues?.email ?? "",
 			password: "",
-			role: initialValues?.role ?? "CLIENT",
+			role: initialValues?.role ?? "ASSISTANT",
 		},
 	});
 
@@ -90,7 +90,7 @@ export function UserCreateForm({
 				name: initialValues.name ?? "",
 				email: initialValues.email ?? "",
 				password: "",
-				role: initialValues.role ?? "CLIENT",
+				role: initialValues.role ?? "ASSISTANT",
 			});
 		}
 	}, [isEditMode, open, initialValues, reset]);
