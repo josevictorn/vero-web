@@ -34,6 +34,11 @@ export const navMain = [
 		icon: FunnelIcon,
 	},
 	{
+		title: "Clientes",
+		url: "/clients",
+		icon: UsersThreeIcon,
+	},
+	{
 		title: "Propostas",
 		url: "/proposals",
 		icon: HandshakeIcon,
