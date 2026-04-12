@@ -1,10 +1,10 @@
 import {
 	ChartBarIcon,
 	FileTextIcon,
+	FunnelIcon,
 	HandshakeIcon,
 	HouseIcon,
 	ScalesIcon,
-	UserCircleGearIcon,
 	UsersThreeIcon,
 } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
@@ -29,9 +29,9 @@ export const navMain = [
 		icon: HouseIcon,
 	},
 	{
-		title: "Clientes",
-		url: "/clients",
-		icon: UserCircleGearIcon,
+		title: "Leads",
+		url: "/leads",
+		icon: FunnelIcon,
 	},
 	{
 		title: "Propostas",
