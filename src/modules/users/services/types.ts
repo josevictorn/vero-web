@@ -13,10 +13,9 @@ export interface FetchAccountsQuery {
 }
 
 export interface Account {
-	createdAt: string;
+	created_at: string;
 	email: string;
 	id: number;
-	isActive: boolean;
 	name: string;
 	role: UserRole;
 }
@@ -24,5 +23,6 @@ export interface Account {
 export interface CreateAccountBody {
 	email: string;
 	name: string;
-	role: UserRole;
+	password: string;
+	role?: UserRole;
 }

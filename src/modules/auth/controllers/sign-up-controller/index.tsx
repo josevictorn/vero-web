@@ -1,14 +1,23 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 import type { AxiosError } from "axios";
 import { toast } from "sonner";
-import { createAccount } from "../../services";
-import type { Account, CreateAccountBody } from "../../services/types";
+import { createAccount } from "@/modules/users/services";
+import type {
+	Account,
+	CreateAccountBody,
+} from "@/modules/users/services/types";
 
-type CreateUserControllerProps = ChildrenController<
-	BaseFormProps<CreateAccountBody, Account>
+export type SignUpControllerChildrenProps = BaseFormProps<
+	CreateAccountBody,
+	Account
 >;
 
-export function CreateUserController({ children }: CreateUserControllerProps) {
+type SignUpControllerProps = ChildrenController<SignUpControllerChildrenProps>;
+
+export function SignUpController({ children }: SignUpControllerProps) {
+	const navigate = useNavigate();
+
 	const queryClient = useQueryClient();
 
 	const createUserRequest = useMutation({
@@ -16,6 +25,7 @@ export function CreateUserController({ children }: CreateUserControllerProps) {
 		onSuccess: () => {
 			toast.success("Account created successfully");
 			queryClient.invalidateQueries({ queryKey: ["fetchAccounts"] });
+			navigate({ to: "/dashboard" });
 		},
 		onError: (error: AxiosError) => {
 			const errorResponse = error.response?.data as ErrorResponse | undefined;

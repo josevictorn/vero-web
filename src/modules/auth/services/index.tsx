@@ -8,7 +8,7 @@ import type {
 export async function authenticate({ email, password }: AuthenticateBody) {
 	const response = await request<AuthenticateResponse>({
 		method: "POST",
-		url: "/accounts/authenticate",
+		url: "/users/authenticate",
 		data: {
 			email,
 			password,
@@ -21,7 +21,7 @@ export async function authenticate({ email, password }: AuthenticateBody) {
 export async function getProfile() {
 	const response = await request<GetProfileResponse>({
 		method: "GET",
-		url: "/accounts/profile",
+		url: "/me",
 	});
 
 	return response.data.user;

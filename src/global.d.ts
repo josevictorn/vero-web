@@ -21,10 +21,10 @@ declare global {
 		results: T[];
 	}
 
-	interface BaseFormProps<Type> {
+	interface BaseFormProps<TypeBody, Type> {
 		initialValues?: Type;
-		isLoading: boolean;
-		submit: (data: Type) => Promise<Type>;
+		isPending: boolean;
+		submit: (data: TypeBody) => Promise<Type>;
 		title?: string;
 	}
 }

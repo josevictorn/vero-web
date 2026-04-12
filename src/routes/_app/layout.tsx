@@ -54,7 +54,7 @@ function AppLayout() {
 						<p className="font-medium text-sm tracking-tight">{title}</p>
 					</div>
 				</header>
-				<div className="flex flex-1 flex-col gap-4 p-4">
+				<div className="m-auto flex w-full max-w-7xl flex-1 flex-col gap-4 p-4">
 					<Outlet />
 				</div>
 			</SidebarInset>

@@ -4,7 +4,7 @@ import type { Account, CreateAccountBody, FetchAccountsQuery } from "./types";
 export async function fetchAccounts({ page }: FetchAccountsQuery) {
 	const response = await request<Paginated<Account>>({
 		method: "GET",
-		url: "/accounts",
+		url: "/users",
 		params: {
 			page,
 		},
@@ -13,13 +13,19 @@ export async function fetchAccounts({ page }: FetchAccountsQuery) {
 	return response.data;
 }
 
-export async function createAccount({ name, email, role }: CreateAccountBody) {
+export async function createAccount({
+	name,
+	email,
+	password,
+	role,
+}: CreateAccountBody) {
 	const response = await request<Account>({
 		method: "POST",
-		url: "/accounts",
+		url: "/users",
 		data: {
 			name,
 			email,
+			password,
 			role,
 		},
 	});

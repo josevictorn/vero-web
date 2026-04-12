@@ -8,7 +8,6 @@ import { cn } from "@/common/lib/utils";
 import { Route } from "@/routes/_app/users";
 import type { ListUsersControllerChildrenProps } from "../../controllers/list-users-controller";
 import { userRoleBadgeClassMap, userRoleMap } from "../../utils";
-import { UserStatus } from "./user-status";
 
 export function UsersList({ fetchAccounts }: ListUsersControllerChildrenProps) {
 	const navigate = useNavigate({ from: Route.fullPath });
@@ -24,7 +23,6 @@ export function UsersList({ fetchAccounts }: ListUsersControllerChildrenProps) {
 				{ title: "Nome", className: "w-48" },
 				{ title: "E-mail" },
 				{ title: "Perfil" },
-				{ title: "Status" },
 				{ title: "Criado há" },
 			]}
 			paginator={{
@@ -46,10 +44,7 @@ export function UsersList({ fetchAccounts }: ListUsersControllerChildrenProps) {
 						</Badge>
 					</TableCell>
 					<TableCell>
-						<UserStatus isActive={accounts.isActive} />
-					</TableCell>
-					<TableCell>
-						{formatDistanceToNow(accounts.createdAt, {
+						{formatDistanceToNow(accounts.created_at, {
 							locale: ptBR,
 							addSuffix: true,
 						})}
