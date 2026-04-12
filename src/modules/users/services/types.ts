@@ -13,12 +13,11 @@ export interface FetchAccountsQuery {
 }
 
 export interface Account {
-	createdAt: string;
+	created_at: string;
 	email: string;
 	id: number;
 	name: string;
 	role: UserRole;
-	updatedAt: string;
 }
 
 export interface CreateAccountBody {
