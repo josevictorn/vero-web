@@ -95,6 +95,7 @@ export function UserCreateForm({
 						<FieldLabel htmlFor="password">Senha</FieldLabel>
 						<Input
 							id="password"
+							placeholder="*******"
 							type="password"
 							{...register("password")}
 							aria-invalid={!!errors.password}
