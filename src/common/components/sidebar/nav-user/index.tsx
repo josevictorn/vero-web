@@ -1,6 +1,9 @@
-import { CaretUpDownIcon, SignOutIcon } from "@phosphor-icons/react";
+import { CaretUpDownIcon, GearIcon, SignOutIcon } from "@phosphor-icons/react";
 import { useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import { useAuth } from "@/modules/auth/contexts/auth-context";
+import { WorkspaceSettingsDialog } from "@/modules/workspace/components/workspace-settings-dialog";
+import { EditWorkspaceController } from "@/modules/workspace/controllers/edit-workspace-controller";
 import { Avatar, AvatarFallback } from "../../ui/avatar";
 import {
 	DropdownMenu,
@@ -26,37 +29,21 @@ export function NavUser({
 		email: string;
 	};
 }) {
+	const [isWorkspaceDialogOpen, setIsWorkspaceDialogOpen] = useState(false);
 	const { isMobile } = useSidebar();
 	const { logout } = useAuth();
 	const navigate = useNavigate();
 
 	return (
-		<SidebarMenu>
-			<SidebarMenuItem>
-				<DropdownMenu>
-					<DropdownMenuTrigger asChild>
-						<SidebarMenuButton
-							className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-							size="lg"
-						>
-							<Avatar className="h-8 w-8 rounded-lg">
-								<AvatarFallback className="rounded-lg">CN</AvatarFallback>
-							</Avatar>
-							<div className="grid flex-1 text-left text-sm leading-tight">
-								<span className="truncate font-medium">{user.name}</span>
-								<span className="truncate text-xs">{user.email}</span>
-							</div>
-							<CaretUpDownIcon className="ml-auto size-4" />
-						</SidebarMenuButton>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent
-						align="end"
-						className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-						side={isMobile ? "bottom" : "right"}
-						sideOffset={4}
-					>
-						<DropdownMenuLabel className="p-0 font-normal">
-							<div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+		<>
+			<SidebarMenu>
+				<SidebarMenuItem>
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<SidebarMenuButton
+								className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+								size="lg"
+							>
 								<Avatar className="h-8 w-8 rounded-lg">
 									<AvatarFallback className="rounded-lg">CN</AvatarFallback>
 								</Avatar>
@@ -64,23 +51,60 @@ export function NavUser({
 									<span className="truncate font-medium">{user.name}</span>
 									<span className="truncate text-xs">{user.email}</span>
 								</div>
-							</div>
-						</DropdownMenuLabel>
-						<DropdownMenuSeparator />
-						<DropdownMenuGroup>
-							<DropdownMenuItem
-								onClick={async () => {
-									await logout();
-									navigate({ to: "/sign-in" });
-								}}
-							>
-								<SignOutIcon />
-								Sair
-							</DropdownMenuItem>
-						</DropdownMenuGroup>
-					</DropdownMenuContent>
-				</DropdownMenu>
-			</SidebarMenuItem>
-		</SidebarMenu>
+								<CaretUpDownIcon className="ml-auto size-4" />
+							</SidebarMenuButton>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent
+							align="end"
+							className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+							side={isMobile ? "bottom" : "right"}
+							sideOffset={4}
+						>
+							<DropdownMenuLabel className="p-0 font-normal">
+								<div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+									<Avatar className="h-8 w-8 rounded-lg">
+										<AvatarFallback className="rounded-lg">CN</AvatarFallback>
+									</Avatar>
+									<div className="grid flex-1 text-left text-sm leading-tight">
+										<span className="truncate font-medium">{user.name}</span>
+										<span className="truncate text-xs">{user.email}</span>
+									</div>
+								</div>
+							</DropdownMenuLabel>
+							<DropdownMenuSeparator />
+							<DropdownMenuGroup>
+								<DropdownMenuItem
+									onSelect={() => {
+										setIsWorkspaceDialogOpen(true);
+									}}
+								>
+									<GearIcon />
+									Configurações do escritório
+								</DropdownMenuItem>
+								<DropdownMenuItem
+									onClick={async () => {
+										await logout();
+										navigate({ to: "/sign-in" });
+									}}
+								>
+									<SignOutIcon />
+									Sair
+								</DropdownMenuItem>
+							</DropdownMenuGroup>
+						</DropdownMenuContent>
+					</DropdownMenu>
+				</SidebarMenuItem>
+			</SidebarMenu>
+
+			<EditWorkspaceController enabled={isWorkspaceDialogOpen}>
+				{(props) => (
+					<WorkspaceSettingsDialog
+						onOpenChange={setIsWorkspaceDialogOpen}
+						open={isWorkspaceDialogOpen}
+						{...props}
+					/>
+				)}
+			</EditWorkspaceController>
+		</>
 	);
 }
