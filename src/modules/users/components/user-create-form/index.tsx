@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/common/components/ui/button";
@@ -22,43 +23,80 @@ import {
 	requiredEmail,
 	requiredString,
 } from "@/common/utils/validation-schemas";
+import type { Account } from "../../services/types";
 import { userRoleMap, userRoles } from "../../utils";
 
-const userCreateFormSchema = z.object({
+const userFormBaseSchema = z.object({
 	name: requiredString(),
 	email: requiredEmail(),
-	password: requiredString(),
+	password: z.string(),
 	role: z.enum(userRoles),
 });
 
-type UserCreateFormData = z.infer<typeof userCreateFormSchema>;
+type UserCreateFormData = z.infer<typeof userFormBaseSchema>;
+
+function getUserFormSchema(isEditMode: boolean) {
+	return userFormBaseSchema.superRefine((data, context) => {
+		if (!isEditMode && data.password.trim().length === 0) {
+			context.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: "Campo obrigatório",
+				path: ["password"],
+			});
+		}
+	});
+}
 
 interface UserCreateFormProps extends React.ComponentProps<"form"> {
-	onCreateUser: (data: UserCreateFormData) => void;
+	initialValues?: Pick<Account, "email" | "name" | "role">;
+	isPending?: boolean;
+	mode?: "create" | "edit";
+	onSubmitUser: (data: UserCreateFormData) => unknown;
+	open?: boolean;
+	submitLabel?: string;
 }
 
 export function UserCreateForm({
 	className,
-	onCreateUser,
+	initialValues,
+	isPending = false,
+	mode = "create",
+	onSubmitUser,
+	submitLabel,
+	open,
 }: UserCreateFormProps) {
+	const isEditMode = mode === "edit";
+
 	const {
 		control,
 		register,
 		handleSubmit,
+		reset,
 		formState: { isSubmitting, errors },
 	} = useForm<UserCreateFormData>({
-		resolver: zodResolver(userCreateFormSchema),
+		resolver: zodResolver(getUserFormSchema(isEditMode)),
 		mode: "onChange",
 		defaultValues: {
-			name: "",
-			email: "",
+			name: initialValues?.name ?? "",
+			email: initialValues?.email ?? "",
 			password: "",
-			role: "CLIENT",
+			role: initialValues?.role ?? "ASSISTANT",
 		},
 	});
 
+	useEffect(() => {
+		if (isEditMode && open && initialValues) {
+			reset({
+				name: initialValues.name ?? "",
+				email: initialValues.email ?? "",
+				password: "",
+				role: initialValues.role ?? "ASSISTANT",
+			});
+		}
+	}, [isEditMode, open, initialValues, reset]);
+
 	const handleCreateUser = async (data: UserCreateFormData) => {
-		await onCreateUser?.(data);
+		await onSubmitUser(data);
 	};
 
 	return (
@@ -90,7 +128,7 @@ export function UserCreateForm({
 					{errors.email && <FieldError errors={[errors.email]} />}
 				</Field>
 
-				<FieldGroup>
+				{!isEditMode && (
 					<Field data-invalid={!!errors.password}>
 						<FieldLabel htmlFor="password">Senha</FieldLabel>
 						<Input
@@ -102,7 +140,7 @@ export function UserCreateForm({
 						/>
 						{errors.password && <FieldError errors={[errors.password]} />}
 					</Field>
-				</FieldGroup>
+				)}
 
 				<Field data-invalid={!!errors.role}>
 					<FieldLabel htmlFor="role">Função</FieldLabel>
@@ -134,8 +172,13 @@ export function UserCreateForm({
 				</Field>
 			</FieldGroup>
 
-			<Button className="w-full" isLoading={isSubmitting} type="submit">
-				Criar usuário
+			<Button
+				className="w-full"
+				disabled={isPending || isSubmitting}
+				isLoading={isPending || isSubmitting}
+				type="submit"
+			>
+				{submitLabel ?? (isEditMode ? "Salvar alterações" : "Criar usuário")}
 			</Button>
 		</form>
 	);

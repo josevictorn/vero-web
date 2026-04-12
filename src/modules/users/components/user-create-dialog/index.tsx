@@ -16,10 +16,10 @@ import {
 	DrawerTitle,
 } from "@/common/components/ui/drawer";
 import { useMediaQuery } from "@/common/hooks/use-media-query";
-import type { CreateAccountBody } from "../../services/types";
+import type { Account, CreateAccountBody } from "../../services/types";
 import { UserCreateForm } from "../user-create-form";
 
-type UserCreateDialogProps = BaseFormProps<CreateAccountBody> & {
+type UserCreateDialogProps = BaseFormProps<CreateAccountBody, Account> & {
 	onOpenChange: (open: boolean) => void;
 	open: boolean;
 };
@@ -28,6 +28,7 @@ export function UserCreateDialog({
 	open,
 	onOpenChange,
 	submit,
+	isPending,
 }: UserCreateDialogProps) {
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -46,7 +47,7 @@ export function UserCreateDialog({
 							Preencha os campos abaixo para criar um novo usuário.
 						</DialogDescription>
 					</DialogHeader>
-					<UserCreateForm onCreateUser={handleCreateUser} />
+					<UserCreateForm isPending={isPending} onSubmitUser={handleCreateUser} />
 				</DialogContent>
 			</Dialog>
 		);
@@ -61,7 +62,11 @@ export function UserCreateDialog({
 						Preencha os campos abaixo para criar um novo usuário.
 					</DrawerDescription>
 				</DrawerHeader>
-				<UserCreateForm className="px-4" onCreateUser={handleCreateUser} />
+				<UserCreateForm
+					className="px-4"
+					isPending={isPending}
+					onSubmitUser={handleCreateUser}
+				/>
 				<DrawerFooter className="pt-2">
 					<DrawerClose asChild>
 						<Button variant="outline">Cancelar</Button>
