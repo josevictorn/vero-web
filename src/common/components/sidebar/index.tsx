@@ -1,4 +1,5 @@
 import {
+	CalendarDotsIcon,
 	ChartBarIcon,
 	FileTextIcon,
 	FunnelIcon,
@@ -57,6 +58,11 @@ export const navMain = [
 		title: "Financeiro",
 		url: "/financial",
 		icon: ChartBarIcon,
+	},
+	{
+		title: "Calendário",
+		url: "/calendar",
+		icon: CalendarDotsIcon,
 	},
 	{
 		title: "Gereciamento de usuários",
