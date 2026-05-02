@@ -8,13 +8,19 @@ import { DropdownMenuItem } from "@/common/components/ui/dropdown-menu";
 import { TableCell, TableRow } from "@/common/components/ui/table";
 import { Route } from "@/routes/_app/clients";
 import { ClientDetailsController } from "../../controllers/client-details-controller";
+import { EditClientController } from "../../controllers/edit-client-controller";
 import type { ListClientsControllerChildrenProps } from "../../controllers/list-clients-controller";
 import { ClientDetailsDialog } from "../client-details-dialog";
+import { ClientEditDialog } from "../client-edit-dialog";
 
-export function ClientsList({ fetchClients }: ListClientsControllerChildrenProps) {
+export function ClientsList({
+	fetchClients,
+}: ListClientsControllerChildrenProps) {
 	const navigate = useNavigate({ from: Route.fullPath });
 	const [viewingClientId, setViewingClientId] = useState<string | null>(null);
 	const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
+	const [editingClientId, setEditingClientId] = useState<string | null>(null);
+	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
 	function handlePaginate(pageIndex: number) {
 		navigate({ search: (prev) => ({ ...prev, page: pageIndex }) });
@@ -25,6 +31,14 @@ export function ClientsList({ fetchClients }: ListClientsControllerChildrenProps
 
 		if (!open) {
 			setViewingClientId(null);
+		}
+	}
+
+	function handleEditDialogChange(open: boolean) {
+		setIsEditDialogOpen(open);
+
+		if (!open) {
+			setEditingClientId(null);
 		}
 	}
 
@@ -65,6 +79,14 @@ export function ClientsList({ fetchClients }: ListClientsControllerChildrenProps
 							>
 								Detalhes
 							</DropdownMenuItem>
+							<DropdownMenuItem
+								onSelect={() => {
+									setEditingClientId(client.id);
+									setIsEditDialogOpen(true);
+								}}
+							>
+								Editar
+							</DropdownMenuItem>
 						</TableActions>
 					</TableRow>
 				)}
@@ -80,6 +102,16 @@ export function ClientsList({ fetchClients }: ListClientsControllerChildrenProps
 					/>
 				)}
 			</ClientDetailsController>
+
+			<EditClientController clientId={editingClientId}>
+				{(props) => (
+					<ClientEditDialog
+						onOpenChange={handleEditDialogChange}
+						open={isEditDialogOpen}
+						{...props}
+					/>
+				)}
+			</EditClientController>
 		</>
 	);
 }
