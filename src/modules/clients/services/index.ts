@@ -1,6 +1,7 @@
 import request from "@/common/lib/axios";
 import type {
 	ClientDTO,
+	ClientListItemDTO,
 	ClientParams,
 	ConvertLeadToClientBody,
 	ConvertLeadToClientParams,
@@ -14,7 +15,9 @@ import type {
 	FetchClientsResponse,
 } from "./types";
 
-export async function fetchClients({ page }: FetchClientsQuery) {
+export async function fetchClients({
+	page,
+}: FetchClientsQuery): Promise<Paginated<ClientListItemDTO>> {
 	const response = await request<FetchClientsResponse>({
 		method: "GET",
 		url: "/clients",
@@ -23,7 +26,10 @@ export async function fetchClients({ page }: FetchClientsQuery) {
 		},
 	});
 
-	return response.data;
+	return {
+		results: response.data.clients,
+		meta: response.data.meta,
+	} satisfies Paginated<ClientListItemDTO>;
 }
 
 export async function createClient({
