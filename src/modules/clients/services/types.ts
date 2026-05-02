@@ -1,12 +1,22 @@
 export interface ClientDTO {
 	cellphone: string;
+	city: string;
+	cpf: string;
 	createdAt: string; // ISO datetime
 	email: string;
 	id: string;
+	issuingAgency: string;
 	lawyerId: string | null;
+	maritalStatus: string;
 	name: string;
+	neighborhood: string;
+	profession: string;
+	rg: string;
+	state: string;
+	street: string;
 	updatedAt: string; // ISO datetime
 	workspaceId: string;
+	zipCode: string;
 }
 
 export interface ClientListItemDTO {
