@@ -8,8 +8,10 @@ import { DropdownMenuItem } from "@/common/components/ui/dropdown-menu";
 import { TableCell, TableRow } from "@/common/components/ui/table";
 import { Route } from "@/routes/_app/clients";
 import { ClientDetailsController } from "../../controllers/client-details-controller";
+import { DeleteClientController } from "../../controllers/delete-client-controller";
 import { EditClientController } from "../../controllers/edit-client-controller";
 import type { ListClientsControllerChildrenProps } from "../../controllers/list-clients-controller";
+import { ClientDeleteDialog } from "../client-delete-dialog";
 import { ClientDetailsDialog } from "../client-details-dialog";
 import { ClientEditDialog } from "../client-edit-dialog";
 
@@ -21,6 +23,11 @@ export function ClientsList({
 	const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
 	const [editingClientId, setEditingClientId] = useState<string | null>(null);
 	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+	const [deletingClientId, setDeletingClientId] = useState<string | null>(null);
+	const [deletingClientName, setDeletingClientName] = useState<
+		string | undefined
+	>();
+	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
 	function handlePaginate(pageIndex: number) {
 		navigate({ search: (prev) => ({ ...prev, page: pageIndex }) });
@@ -39,6 +46,15 @@ export function ClientsList({
 
 		if (!open) {
 			setEditingClientId(null);
+		}
+	}
+
+	function handleDeleteDialogChange(open: boolean) {
+		setIsDeleteDialogOpen(open);
+
+		if (!open) {
+			setDeletingClientId(null);
+			setDeletingClientName(undefined);
 		}
 	}
 
@@ -87,6 +103,16 @@ export function ClientsList({
 							>
 								Editar
 							</DropdownMenuItem>
+							<DropdownMenuItem
+								className="text-destructive focus:text-destructive"
+								onSelect={() => {
+									setDeletingClientId(client.id);
+									setDeletingClientName(client.name);
+									setIsDeleteDialogOpen(true);
+								}}
+							>
+								Remover
+							</DropdownMenuItem>
 						</TableActions>
 					</TableRow>
 				)}
@@ -112,6 +138,18 @@ export function ClientsList({
 					/>
 				)}
 			</EditClientController>
+
+			<DeleteClientController clientId={deletingClientId}>
+				{({ isPending, submit }) => (
+					<ClientDeleteDialog
+						clientName={deletingClientName}
+						isPending={isPending}
+						onConfirm={submit}
+						onOpenChange={handleDeleteDialogChange}
+						open={isDeleteDialogOpen}
+					/>
+				)}
+			</DeleteClientController>
 		</>
 	);
 }
