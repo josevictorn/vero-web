@@ -24,7 +24,7 @@ export async function createAccount({
 	password,
 	role,
 }: CreateAccountBody) {
-	const response = await request<Account>({
+	const response = await request<{ userId: string }>({
 		method: "POST",
 		url: "/users",
 		data: {
