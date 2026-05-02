@@ -16,10 +16,11 @@ import {
 	DrawerTitle,
 } from "@/common/components/ui/drawer";
 import { useMediaQuery } from "@/common/hooks/use-media-query";
-import type { Account, CreateAccountBody } from "../../services/types";
+import type { Account } from "../../services/types";
+import type { UserCreateFormData } from "../user-create-form";
 import { UserCreateForm } from "../user-create-form";
 
-type UserCreateDialogProps = BaseFormProps<CreateAccountBody, Account> & {
+type UserCreateDialogProps = BaseFormProps<UserCreateFormData, Account> & {
 	onOpenChange: (open: boolean) => void;
 	open: boolean;
 };
@@ -32,7 +33,7 @@ export function UserCreateDialog({
 }: UserCreateDialogProps) {
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 
-	const handleCreateUser = async (data: CreateAccountBody) => {
+	const handleCreateUser = async (data: UserCreateFormData) => {
 		await submit(data);
 		onOpenChange(false);
 	};
@@ -47,7 +48,10 @@ export function UserCreateDialog({
 							Preencha os campos abaixo para criar um novo usuário.
 						</DialogDescription>
 					</DialogHeader>
-					<UserCreateForm isPending={isPending} onSubmitUser={handleCreateUser} />
+					<UserCreateForm
+						isPending={isPending}
+						onSubmitUser={handleCreateUser}
+					/>
 				</DialogContent>
 			</Dialog>
 		);
