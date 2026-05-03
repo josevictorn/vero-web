@@ -25,16 +25,20 @@ import {
 } from "@/common/utils/validation-schemas";
 import type { Account } from "../../services/types";
 import { userRoleMap, userRoles } from "../../utils";
-import { BRAZILIAN_STATES } from "../../utils/brazilian-states";
 import { LawyerFields } from "../lawyer-fields";
 
 const lawyerFieldsSchema = z.object({
 	cellphone: requiredString(),
 	oab: requiredString(),
-	oabState: z.enum(
-		BRAZILIAN_STATES.map((s) => s.value) as [string, ...string[]]
-	),
+	oabState: requiredString(),
 	pix: requiredString(),
+});
+
+const lawyerFieldsPermissiveSchema = z.object({
+	cellphone: z.string(),
+	oab: z.string(),
+	oabState: z.string(),
+	pix: z.string(),
 });
 
 const userFormBaseSchema = z.object({
@@ -42,7 +46,7 @@ const userFormBaseSchema = z.object({
 	email: requiredEmail(),
 	password: z.string(),
 	role: z.enum(userRoles),
-	lawyerFields: lawyerFieldsSchema.optional(),
+	lawyerFields: lawyerFieldsPermissiveSchema.optional(),
 });
 
 export type UserCreateFormData = z.infer<typeof userFormBaseSchema>;
