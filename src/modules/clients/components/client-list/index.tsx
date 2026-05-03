@@ -1,3 +1,4 @@
+import { CheckCircleIcon, XCircleIcon } from "@phosphor-icons/react";
 import { useNavigate } from "@tanstack/react-router";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -5,6 +6,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Table } from "@/common/components/table";
 import { TableActions } from "@/common/components/table-actions";
+import { Badge } from "@/common/components/ui/badge";
 import { DropdownMenuItem } from "@/common/components/ui/dropdown-menu";
 import { TableCell, TableRow } from "@/common/components/ui/table";
 import {
@@ -74,6 +76,7 @@ export function ClientsList({
 					{ title: "E-mail" },
 					{ title: "Telefone" },
 					{ title: "Criado há" },
+					{ title: "Tem advogado?" },
 					{ title: "" },
 				]}
 				paginator={{
@@ -92,6 +95,16 @@ export function ClientsList({
 								locale: ptBR,
 								addSuffix: true,
 							})}
+						</TableCell>
+						<TableCell>
+							<Badge className="px-1.5 text-muted-foreground" variant="outline">
+								{client.lawyer_id ? (
+									<CheckCircleIcon className="fill-green-500 dark:fill-green-400" />
+								) : (
+									<XCircleIcon className="fill-red-500 dark:fill-red-400" />
+								)}
+								{client.lawyer_id ? "Sim" : "Não"}
+							</Badge>
 						</TableCell>
 						<TableActions>
 							<DropdownMenuItem
