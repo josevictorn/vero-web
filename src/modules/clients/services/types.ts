@@ -132,3 +132,11 @@ export interface ConvertLeadToClientResponse {
 }
 
 export type DeleteClientResponse = null;
+
+export interface GenerateContractParams {
+	id: string;
+}
+
+export interface GenerateContractResponse {
+	contractUrl: string;
+}

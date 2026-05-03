@@ -13,6 +13,8 @@ import type {
 	EditClientResponse,
 	FetchClientsQuery,
 	FetchClientsResponse,
+	GenerateContractParams,
+	GenerateContractResponse,
 } from "./types";
 
 export async function fetchClients({
@@ -110,6 +112,15 @@ export async function convertLeadToClient(
 		method: "POST",
 		url: `/leads/${leadId}/convert`,
 		data: body,
+	});
+
+	return response.data;
+}
+
+export async function generateContract({ id }: GenerateContractParams) {
+	const response = await request<GenerateContractResponse>({
+		method: "POST",
+		url: `/clients/${id}/contract`,
 	});
 
 	return response.data;
