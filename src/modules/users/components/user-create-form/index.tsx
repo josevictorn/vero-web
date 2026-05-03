@@ -26,6 +26,7 @@ import {
 import type { Account } from "../../services/types";
 import { userRoleMap, userRoles } from "../../utils";
 import { BRAZILIAN_STATES } from "../../utils/brazilian-states";
+import { LawyerFields } from "../lawyer-fields";
 
 const lawyerFieldsSchema = z.object({
 	cellphone: requiredString(),
@@ -56,7 +57,7 @@ function getUserFormSchema(isEditMode: boolean) {
 			});
 		}
 
-		if (data.role === "LAWYER" && !isEditMode) {
+		if (data.role === "LAWYER") {
 			const lawyerResult = lawyerFieldsSchema.safeParse(data.lawyerFields);
 
 			if (!lawyerResult.success) {
@@ -71,8 +72,17 @@ function getUserFormSchema(isEditMode: boolean) {
 	});
 }
 
+interface LawyerInitialValues {
+	cellphone: string;
+	oab: string;
+	oabState: string;
+	pix: string;
+}
+
 interface UserCreateFormProps extends React.ComponentProps<"form"> {
-	initialValues?: Pick<Account, "email" | "name" | "role">;
+	initialValues?: Pick<Account, "email" | "name" | "role"> & {
+		lawyerFields?: LawyerInitialValues;
+	};
 	isPending?: boolean;
 	mode?: "create" | "edit";
 	onSubmitUser: (data: UserCreateFormData) => unknown;
@@ -107,16 +117,16 @@ export function UserCreateForm({
 			password: "",
 			role: initialValues?.role ?? "ASSISTANT",
 			lawyerFields: {
-				cellphone: "",
-				oab: "",
-				oabState: "",
-				pix: "",
+				cellphone: initialValues?.lawyerFields?.cellphone ?? "",
+				oab: initialValues?.lawyerFields?.oab ?? "",
+				oabState: initialValues?.lawyerFields?.oabState ?? "",
+				pix: initialValues?.lawyerFields?.pix ?? "",
 			},
 		},
 	});
 
 	const selectedRole = watch("role");
-	const showLawyerFields = selectedRole === "LAWYER" && !isEditMode;
+	const showLawyerFields = selectedRole === "LAWYER";
 
 	useEffect(() => {
 		if (isEditMode && open && initialValues) {
@@ -126,10 +136,10 @@ export function UserCreateForm({
 				password: "",
 				role: initialValues.role ?? "ASSISTANT",
 				lawyerFields: {
-					cellphone: "",
-					oab: "",
-					oabState: "",
-					pix: "",
+					cellphone: initialValues.lawyerFields?.cellphone ?? "",
+					oab: initialValues.lawyerFields?.oab ?? "",
+					oabState: initialValues.lawyerFields?.oabState ?? "",
+					pix: initialValues.lawyerFields?.pix ?? "",
 				},
 			});
 		}
@@ -212,83 +222,7 @@ export function UserCreateForm({
 				</Field>
 
 				{showLawyerFields && (
-					<>
-						<div className="mt-2 border-t pt-4">
-							<p className="mb-3 font-medium text-muted-foreground text-sm">
-								Informações do advogado
-							</p>
-						</div>
-
-						<Field data-invalid={!!errors.lawyerFields?.cellphone}>
-							<FieldLabel htmlFor="lawyerCellphone">Celular</FieldLabel>
-							<Input
-								id="lawyerCellphone"
-								placeholder="(00) 00000-0000"
-								{...register("lawyerFields.cellphone")}
-								aria-invalid={!!errors.lawyerFields?.cellphone}
-							/>
-							{errors.lawyerFields?.cellphone && (
-								<FieldError errors={[errors.lawyerFields.cellphone]} />
-							)}
-						</Field>
-
-						<Field data-invalid={!!errors.lawyerFields?.oab}>
-							<FieldLabel htmlFor="lawyerOab">Número da OAB</FieldLabel>
-							<Input
-								id="lawyerOab"
-								placeholder="Digite o número da OAB"
-								{...register("lawyerFields.oab")}
-								aria-invalid={!!errors.lawyerFields?.oab}
-							/>
-							{errors.lawyerFields?.oab && (
-								<FieldError errors={[errors.lawyerFields.oab]} />
-							)}
-						</Field>
-
-						<Field data-invalid={!!errors.lawyerFields?.oabState}>
-							<FieldLabel htmlFor="lawyerOabState">Estado da OAB</FieldLabel>
-							<Controller
-								control={control}
-								name="lawyerFields.oabState"
-								render={({ field }) => (
-									<Select onValueChange={field.onChange} value={field.value}>
-										<SelectTrigger
-											aria-invalid={!!errors.lawyerFields?.oabState}
-											className="w-full"
-											id="lawyerOabState"
-										>
-											<SelectValue placeholder="Selecione o estado" />
-										</SelectTrigger>
-										<SelectContent>
-											<SelectGroup>
-												{BRAZILIAN_STATES.map((state) => (
-													<SelectItem key={state.value} value={state.value}>
-														{state.label}
-													</SelectItem>
-												))}
-											</SelectGroup>
-										</SelectContent>
-									</Select>
-								)}
-							/>
-							{errors.lawyerFields?.oabState && (
-								<FieldError errors={[errors.lawyerFields.oabState]} />
-							)}
-						</Field>
-
-						<Field data-invalid={!!errors.lawyerFields?.pix}>
-							<FieldLabel htmlFor="lawyerPix">Chave PIX</FieldLabel>
-							<Input
-								id="lawyerPix"
-								placeholder="Digite a chave PIX"
-								{...register("lawyerFields.pix")}
-								aria-invalid={!!errors.lawyerFields?.pix}
-							/>
-							{errors.lawyerFields?.pix && (
-								<FieldError errors={[errors.lawyerFields.pix]} />
-							)}
-						</Field>
-					</>
+					<LawyerFields control={control} errors={errors} register={register} />
 				)}
 			</FieldGroup>
 

@@ -17,10 +17,11 @@ import {
 } from "@/common/components/ui/drawer";
 import { Skeleton } from "@/common/components/ui/skeleton";
 import { useMediaQuery } from "@/common/hooks/use-media-query";
-import type { Account, UpdateUserBody } from "../../services/types";
+import type { Account } from "../../services/types";
+import type { UserCreateFormData } from "../user-create-form";
 import { UserCreateForm } from "../user-create-form";
 
-type UserEditDialogProps = BaseFormProps<UpdateUserBody, Account> & {
+type UserEditDialogProps = BaseFormProps<UserCreateFormData, Account> & {
 	isFetchingUser: boolean;
 	onOpenChange: (open: boolean) => void;
 	open: boolean;
@@ -36,7 +37,7 @@ export function UserEditDialog({
 }: UserEditDialogProps) {
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 
-	const handleUpdateUser = async (data: UpdateUserBody) => {
+	const handleUpdateUser = async (data: UserCreateFormData) => {
 		if (!initialValues) {
 			return;
 		}
@@ -58,19 +59,7 @@ export function UserEditDialog({
 			initialValues={initialValues}
 			isPending={isPending}
 			mode="edit"
-			onSubmitUser={async (data) => {
-				if (!initialValues) {
-					return;
-				}
-
-				await handleUpdateUser({
-					id: initialValues.id,
-					email: data.email,
-					name: data.name,
-					password: data.password || undefined,
-					role: data.role,
-				});
-			}}
+			onSubmitUser={handleUpdateUser}
 			open={open}
 			submitLabel="Salvar alterações"
 		/>

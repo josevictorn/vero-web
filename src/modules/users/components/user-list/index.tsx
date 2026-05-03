@@ -9,10 +9,10 @@ import { DropdownMenuItem } from "@/common/components/ui/dropdown-menu";
 import { TableCell, TableRow } from "@/common/components/ui/table";
 import { cn } from "@/common/lib/utils";
 import { Route } from "@/routes/_app/users";
-import { UserEditDialog } from "../user-edit-dialog";
 import { EditUserController } from "../../controllers/edit-user-controller";
 import type { ListUsersControllerChildrenProps } from "../../controllers/list-users-controller";
 import { userRoleBadgeClassMap, userRoleMap } from "../../utils";
+import { UserEditDialog } from "../user-edit-dialog";
 
 export function UsersList({ fetchAccounts }: ListUsersControllerChildrenProps) {
 	const navigate = useNavigate({ from: Route.fullPath });
