@@ -7,9 +7,11 @@ import { TableActions } from "@/common/components/table-actions";
 import { DropdownMenuItem } from "@/common/components/ui/dropdown-menu";
 import { TableCell, TableRow } from "@/common/components/ui/table";
 import { Route } from "@/routes/_app/leads";
+import { ConvertLeadController } from "../../controllers/convert-lead-controller";
 import { DeleteLeadController } from "../../controllers/delete-lead-controller";
 import { EditLeadController } from "../../controllers/edit-lead-controller";
 import type { ListLeadsControllerChildrenProps } from "../../controllers/list-leads-controller";
+import { LeadConvertDialog } from "../lead-convert-dialog";
 import { LeadDeleteDialog } from "../lead-delete-dialog";
 import { LeadEditDialog } from "../lead-edit-dialog";
 
@@ -22,6 +24,11 @@ export function LeadsList({ fetchLeads }: ListLeadsControllerChildrenProps) {
 		string | undefined
 	>();
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+	const [convertingLeadId, setConvertingLeadId] = useState<string | null>(null);
+	const [convertingLeadName, setConvertingLeadName] = useState<
+		string | undefined
+	>();
+	const [isConvertDialogOpen, setIsConvertDialogOpen] = useState(false);
 
 	function handlePaginate(pageIndex: number) {
 		navigate({ search: (prev) => ({ ...prev, page: pageIndex }) });
@@ -41,6 +48,15 @@ export function LeadsList({ fetchLeads }: ListLeadsControllerChildrenProps) {
 		if (!open) {
 			setDeletingLeadId(null);
 			setDeletingLeadName(undefined);
+		}
+	}
+
+	function handleConvertDialogChange(open: boolean) {
+		setIsConvertDialogOpen(open);
+
+		if (!open) {
+			setConvertingLeadId(null);
+			setConvertingLeadName(undefined);
 		}
 	}
 
@@ -82,6 +98,15 @@ export function LeadsList({ fetchLeads }: ListLeadsControllerChildrenProps) {
 								Editar
 							</DropdownMenuItem>
 							<DropdownMenuItem
+								onSelect={() => {
+									setConvertingLeadId(lead.id);
+									setConvertingLeadName(lead.name);
+									setIsConvertDialogOpen(true);
+								}}
+							>
+								Converter em cliente
+							</DropdownMenuItem>
+							<DropdownMenuItem
 								className="text-destructive focus:text-destructive"
 								onSelect={() => {
 									setDeletingLeadId(lead.id);
@@ -117,6 +142,18 @@ export function LeadsList({ fetchLeads }: ListLeadsControllerChildrenProps) {
 					/>
 				)}
 			</DeleteLeadController>
+
+			<ConvertLeadController leadId={convertingLeadId}>
+				{({ isPending, submit }) => (
+					<LeadConvertDialog
+						isPending={isPending}
+						leadName={convertingLeadName}
+						onConfirm={submit}
+						onOpenChange={handleConvertDialogChange}
+						open={isConvertDialogOpen}
+					/>
+				)}
+			</ConvertLeadController>
 		</>
 	);
 }

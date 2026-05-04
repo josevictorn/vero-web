@@ -25,15 +25,31 @@ import {
 } from "@/common/utils/validation-schemas";
 import type { Account } from "../../services/types";
 import { userRoleMap, userRoles } from "../../utils";
+import { LawyerFields } from "../lawyer-fields";
+
+const lawyerFieldsSchema = z.object({
+	cellphone: requiredString(),
+	oab: requiredString(),
+	oabState: requiredString(),
+	pix: requiredString(),
+});
+
+const lawyerFieldsPermissiveSchema = z.object({
+	cellphone: z.string(),
+	oab: z.string(),
+	oabState: z.string(),
+	pix: z.string(),
+});
 
 const userFormBaseSchema = z.object({
 	name: requiredString(),
 	email: requiredEmail(),
 	password: z.string(),
 	role: z.enum(userRoles),
+	lawyerFields: lawyerFieldsPermissiveSchema.optional(),
 });
 
-type UserCreateFormData = z.infer<typeof userFormBaseSchema>;
+export type UserCreateFormData = z.infer<typeof userFormBaseSchema>;
 
 function getUserFormSchema(isEditMode: boolean) {
 	return userFormBaseSchema.superRefine((data, context) => {
@@ -44,11 +60,33 @@ function getUserFormSchema(isEditMode: boolean) {
 				path: ["password"],
 			});
 		}
+
+		if (data.role === "LAWYER") {
+			const lawyerResult = lawyerFieldsSchema.safeParse(data.lawyerFields);
+
+			if (!lawyerResult.success) {
+				for (const issue of lawyerResult.error.issues) {
+					context.addIssue({
+						...issue,
+						path: ["lawyerFields", ...issue.path],
+					});
+				}
+			}
+		}
 	});
 }
 
+interface LawyerInitialValues {
+	cellphone: string;
+	oab: string;
+	oabState: string;
+	pix: string;
+}
+
 interface UserCreateFormProps extends React.ComponentProps<"form"> {
-	initialValues?: Pick<Account, "email" | "name" | "role">;
+	initialValues?: Pick<Account, "email" | "name" | "role"> & {
+		lawyerFields?: LawyerInitialValues;
+	};
 	isPending?: boolean;
 	mode?: "create" | "edit";
 	onSubmitUser: (data: UserCreateFormData) => unknown;
@@ -72,6 +110,7 @@ export function UserCreateForm({
 		register,
 		handleSubmit,
 		reset,
+		watch,
 		formState: { isSubmitting, errors },
 	} = useForm<UserCreateFormData>({
 		resolver: zodResolver(getUserFormSchema(isEditMode)),
@@ -81,8 +120,17 @@ export function UserCreateForm({
 			email: initialValues?.email ?? "",
 			password: "",
 			role: initialValues?.role ?? "ASSISTANT",
+			lawyerFields: {
+				cellphone: initialValues?.lawyerFields?.cellphone ?? "",
+				oab: initialValues?.lawyerFields?.oab ?? "",
+				oabState: initialValues?.lawyerFields?.oabState ?? "",
+				pix: initialValues?.lawyerFields?.pix ?? "",
+			},
 		},
 	});
+
+	const selectedRole = watch("role");
+	const showLawyerFields = selectedRole === "LAWYER";
 
 	useEffect(() => {
 		if (isEditMode && open && initialValues) {
@@ -91,6 +139,12 @@ export function UserCreateForm({
 				email: initialValues.email ?? "",
 				password: "",
 				role: initialValues.role ?? "ASSISTANT",
+				lawyerFields: {
+					cellphone: initialValues.lawyerFields?.cellphone ?? "",
+					oab: initialValues.lawyerFields?.oab ?? "",
+					oabState: initialValues.lawyerFields?.oabState ?? "",
+					pix: initialValues.lawyerFields?.pix ?? "",
+				},
 			});
 		}
 	}, [isEditMode, open, initialValues, reset]);
@@ -170,6 +224,10 @@ export function UserCreateForm({
 					/>
 					{errors.role && <FieldError errors={[errors.role]} />}
 				</Field>
+
+				{showLawyerFields && (
+					<LawyerFields control={control} errors={errors} register={register} />
+				)}
 			</FieldGroup>
 
 			<Button

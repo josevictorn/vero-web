@@ -16,41 +16,46 @@ import {
 	DrawerTitle,
 } from "@/common/components/ui/drawer";
 import { useMediaQuery } from "@/common/hooks/use-media-query";
-import type { Account } from "../../services/types";
-import type { UserCreateFormData } from "../user-create-form";
-import { UserCreateForm } from "../user-create-form";
+import type { ConvertLeadToClientBody } from "@/modules/clients/services/types";
+import { LeadConvertForm } from "../lead-convert-form";
 
-type UserCreateDialogProps = BaseFormProps<UserCreateFormData, Account> & {
+interface LeadConvertDialogProps {
+	isPending: boolean;
+	leadName?: string;
+	onConfirm: (data: ConvertLeadToClientBody) => Promise<void>;
 	onOpenChange: (open: boolean) => void;
 	open: boolean;
-};
+}
 
-export function UserCreateDialog({
+export function LeadConvertDialog({
 	open,
 	onOpenChange,
-	submit,
+	onConfirm,
 	isPending,
-}: UserCreateDialogProps) {
+	leadName,
+}: LeadConvertDialogProps) {
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 
-	const handleCreateUser = async (data: UserCreateFormData) => {
-		await submit(data);
+	const handleConvertLead = async (data: ConvertLeadToClientBody) => {
+		await onConfirm(data);
 		onOpenChange(false);
 	};
+
+	const description = leadName
+		? `Complete os dados de ${leadName} para converter em cliente.`
+		: "Complete os dados para converter o lead em cliente.";
 
 	if (isDesktop) {
 		return (
 			<Dialog onOpenChange={onOpenChange} open={open}>
 				<DialogContent className="sm:max-w-106.25">
 					<DialogHeader>
-						<DialogTitle>Criar usuário</DialogTitle>
-						<DialogDescription>
-							Preencha os campos abaixo para criar um novo usuário.
-						</DialogDescription>
+						<DialogTitle>Converter lead</DialogTitle>
+						<DialogDescription>{description}</DialogDescription>
 					</DialogHeader>
-					<UserCreateForm
+					<LeadConvertForm
 						isPending={isPending}
-						onSubmitUser={handleCreateUser}
+						onSubmitLead={handleConvertLead}
 					/>
 				</DialogContent>
 			</Dialog>
@@ -61,15 +66,13 @@ export function UserCreateDialog({
 		<Drawer onOpenChange={onOpenChange} open={open}>
 			<DrawerContent>
 				<DrawerHeader className="text-left">
-					<DrawerTitle>Criar usuário</DrawerTitle>
-					<DrawerDescription>
-						Preencha os campos abaixo para criar um novo usuário.
-					</DrawerDescription>
+					<DrawerTitle>Converter lead</DrawerTitle>
+					<DrawerDescription>{description}</DrawerDescription>
 				</DrawerHeader>
-				<UserCreateForm
+				<LeadConvertForm
 					className="px-4"
 					isPending={isPending}
-					onSubmitUser={handleCreateUser}
+					onSubmitLead={handleConvertLead}
 				/>
 				<DrawerFooter className="pt-2">
 					<DrawerClose asChild>

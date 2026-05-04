@@ -15,67 +15,50 @@ import {
 	DrawerHeader,
 	DrawerTitle,
 } from "@/common/components/ui/drawer";
-import { Skeleton } from "@/common/components/ui/skeleton";
 import { useMediaQuery } from "@/common/hooks/use-media-query";
-import type { Account } from "../../services/types";
-import type { UserCreateFormData } from "../user-create-form";
-import { UserCreateForm } from "../user-create-form";
+import type {
+	CreateClientBody,
+	CreateClientResponse,
+} from "../../services/types";
+import { ClientCreateForm } from "../client-create-form";
 
-type UserEditDialogProps = BaseFormProps<UserCreateFormData, Account> & {
-	isFetchingUser: boolean;
+type ClientCreateDialogProps = BaseFormProps<
+	Omit<CreateClientBody, "workspaceId">,
+	CreateClientResponse
+> & {
 	onOpenChange: (open: boolean) => void;
 	open: boolean;
 };
 
-export function UserEditDialog({
+export function ClientCreateDialog({
 	open,
 	onOpenChange,
 	submit,
-	initialValues,
 	isPending,
-	isFetchingUser,
-}: UserEditDialogProps) {
+}: ClientCreateDialogProps) {
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 
-	const handleUpdateUser = async (data: UserCreateFormData) => {
-		if (!initialValues) {
-			return;
-		}
-
+	const handleCreateClient = async (
+		data: Omit<CreateClientBody, "workspaceId">
+	) => {
 		await submit(data);
 		onOpenChange(false);
 	};
-
-	const content = isFetchingUser ? (
-		<div className="space-y-4">
-			<Skeleton className="h-7 w-full" />
-			<Skeleton className="h-7 w-full" />
-			<Skeleton className="h-7 w-full" />
-			<Skeleton className="h-7 w-full" />
-			<Skeleton className="h-7 w-full" />
-		</div>
-	) : (
-		<UserCreateForm
-			initialValues={initialValues}
-			isPending={isPending}
-			mode="edit"
-			onSubmitUser={handleUpdateUser}
-			open={open}
-			submitLabel="Salvar alterações"
-		/>
-	);
 
 	if (isDesktop) {
 		return (
 			<Dialog onOpenChange={onOpenChange} open={open}>
 				<DialogContent className="sm:max-w-106.25">
 					<DialogHeader>
-						<DialogTitle>Editar usuário</DialogTitle>
+						<DialogTitle>Criar cliente</DialogTitle>
 						<DialogDescription>
-							Atualize os dados do usuário selecionado.
+							Preencha os campos abaixo para cadastrar um novo cliente.
 						</DialogDescription>
 					</DialogHeader>
-					{content}
+					<ClientCreateForm
+						isPending={isPending}
+						onSubmitClient={handleCreateClient}
+					/>
 				</DialogContent>
 			</Dialog>
 		);
@@ -85,12 +68,16 @@ export function UserEditDialog({
 		<Drawer onOpenChange={onOpenChange} open={open}>
 			<DrawerContent>
 				<DrawerHeader className="text-left">
-					<DrawerTitle>Editar usuário</DrawerTitle>
+					<DrawerTitle>Criar cliente</DrawerTitle>
 					<DrawerDescription>
-						Atualize os dados do usuário selecionado.
+						Preencha os campos abaixo para cadastrar um novo cliente.
 					</DrawerDescription>
 				</DrawerHeader>
-				<div className="px-4">{content}</div>
+				<ClientCreateForm
+					className="px-4"
+					isPending={isPending}
+					onSubmitClient={handleCreateClient}
+				/>
 				<DrawerFooter className="pt-2">
 					<DrawerClose asChild>
 						<Button variant="outline">Cancelar</Button>
